@@ -1,0 +1,15 @@
+version: '3.0'
+services:
+    DiskSpeed:
+        image: 'jbartlett777/diskspeed:latest'
+        privileged: true
+        ports:
+            - '18888:8888/TCP'
+        container_name: DiskSpeed
+        environment:
+          - PUID=1001           #Change this if different
+          - PGID=100            #Change this if different
+          - TZ=America/Chicago  #Change timezone if different
+        volumes:
+            - 'CHANGE_TO_COMPOSE_DATA_PATH/diskspeed:/temp/DiskSpeed'
+        restart: "unless-stopped"
