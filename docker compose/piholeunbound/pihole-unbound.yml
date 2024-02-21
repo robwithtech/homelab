@@ -1,0 +1,36 @@
+version: "3"
+
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+services:
+  pihole:
+    container_name: pihole-unbound
+    image: piholeunbound:latest
+    hostname: pihole            #hostname for container
+    networks:
+      pih_network:
+        ipv4_address: 10.0.0.51 #**Change, use pihole address
+    environment:
+      TZ: 'America/Chicago'     #**Change to your timezone
+      WEBPASSWORD: '12345678'   #**Change this is pihole web password, only used on container creation.
+    ports:
+      - "443:443/tcp"
+      - "53:53/tcp"
+#      - "67:67/udp" # Only required if you are using Pi-hole as your DHCP server
+      - "53:53/udp"
+      - "80:80/tcp"
+    restart: "unless-stopped"
+    volumes:
+      - "CHANGE_TO_COMPOSE_DATA_PATH/pihole/etc/pihole:/etc/pihole"
+      - "CHANGE_TO_COMPOSE_DATA_PATH/pihole/etc/dnsmasq.d:/etc/dnsmasq.d"
+#    cap_add:
+#      - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
+networks:
+  pih_network:
+    driver: macvlan
+    driver_opts:
+      parent: ens18 #**Change this to your interface
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24     #**Your network subnet
+          gateway: 10.0.0.1       #**Your network gateway
+          ip_range: 10.0.0.51/32  #**IP for pihole container
