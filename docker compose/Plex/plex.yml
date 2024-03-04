@@ -1,0 +1,17 @@
+---
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1001  # Change this to your user PUID
+      - PGID=100   # Change this to your user PGID
+      - TZ=America/Chicago # Change timezone if different
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - CHANGE_TO_COMPOSE_DATA_PATH/plex/config:/config # Change this path
+      - /srv/dev-disk-by-uuid.../data/plex/tvseries:/tv # Change this path
+      - /srv/dev-disk-by-uuid.../data/plex/movies:/movies # Change this path
+    restart: unless-stopped
