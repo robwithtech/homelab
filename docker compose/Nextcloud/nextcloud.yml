@@ -1,0 +1,46 @@
+---
+services:
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:28.0.3
+    container_name: nextcloud
+    depends_on:
+      - nextcloud-mariadb
+    networks:
+      nextcloud-network:
+        ipv4_address: 10.0.0.49 #Change, your nextcloud ipaddress
+      backend-network:
+    environment:
+      - PUID=1000               #Change to your user PUID
+      - PGID=1000               #Change to your user PGID
+      - TZ=America/Chicago      #Change to your timezone
+    volumes:
+      - CHANGE_TO_COMPOSE_DATA_PATH/nextcloud/config:/config
+      - CHANGE_TO_COMPOSE_DATA_PATH/nextcloud/data:/data
+    restart: unless-stopped
+
+# Mariadb 10.11.6
+
+  nextcloud-mariadb:
+    image: lscr.io/linuxserver/mariadb:10.11.6
+    container_name: nextcloud-mariadb
+    networks:
+      backend-network:
+    environment:
+      - PUID=1000              #Change to your user PUID
+      - PGID=1000              #Change to your user PGID
+      - TZ=America/Chicago
+      - MYSQL_ROOT_PASSWORD=ENTERSECUREPASSWORD
+      - MYSQL_DATABASE=nextcloud_database
+      - MYSQL_USER=nextcloud-dbuser
+      - MYSQL_PASSWORD=ENTERASECUREDATABASEPASSWORD
+    volumes:
+      - CHANGE_TO_COMPOSE_DATA_PATH/nextcloud/mariadb/config:/config
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+networks:
+  backend-network:
+    name: mariadb-backend-network
+  nextcloud-network:
+    name: local-network
+    external: true
