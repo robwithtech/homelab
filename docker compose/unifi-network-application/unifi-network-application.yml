@@ -1,0 +1,45 @@
+#This yml file contains both unifi-network-application and mongo 7.0.11 Container
+
+---
+services:
+  unifi-network-application:
+    image: lscr.io/linuxserver/unifi-network-application:latest
+    container_name: unifi-network-application
+    environment:
+      - PUID=1000           #Change to your environment
+      - PGID=100            #Change to your environment
+      - TZ=Etc/UTC          #Change to your environment
+      - MONGO_USER=unifi
+      - MONGO_PASS=Securepassword #Change to securepassword
+      - MONGO_HOST=unifi-db       
+      - MONGO_PORT=27017
+      - MONGO_DBNAME=unifi-db
+      - MEM_LIMIT=1024 #optional
+#      - MEM_STARTUP=1024 #optional
+#      - MONGO_TLS= #optional
+#      - MONGO_AUTHSOURCE= #optional
+    volumes:
+      - CHANGE_TO_COMPOSE_DATA_PATH/unifi-network-application/data:/config
+    ports:
+      - 8443:8443
+      - 3478:3478/udp
+      - 10001:10001/udp
+      - 8080:8080
+#      - 1900:1900/udp #optional
+#      - 8843:8843 #optional
+#      - 8880:8880 #optional
+#      - 6789:6789 #optional
+#      - 5514:5514/udp #optional
+    restart: unless-stopped
+
+# Using Mongo Database 7.0.11
+
+  unifi-db:
+    image: docker.io/mongo:7.0.11
+    container_name: unifi-db
+    ports:
+      - 27017:27017
+    volumes:
+       - CHANGE_TO_COMPOSE_DATA_PATH/unifi-db/data:/data/db
+       - CHANGE_TO_COMPOSE_DATA_PATH/unifi-db/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    restart: unless-stopped
