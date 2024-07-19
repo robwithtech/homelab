@@ -1,0 +1,11 @@
+---
+services:
+    nginx:
+        container_name: helloworld
+        image: nginx
+        hostname: helloworld
+        ports:
+            - '8080:80'
+        volumes:
+            - CHANGE_TO_COMPOSE_DATA_PATH/helloworld/html:/usr/share/nginx/html:ro
+        restart: unless-stopped  
