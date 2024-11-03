@@ -5,10 +5,6 @@ services:
             - '8000:8000'
             - '9443:9443'
         container_name: portainer
-        environment:
-          - PUID=1001           #Change this if different
-          - PGID=100            #Change this if different
-          - TZ=America/Chicago  #Change timezone if different
         restart: always
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock'
