@@ -1,0 +1,16 @@
+---
+services:
+   triliumnext:
+      image: triliumnext/notes:stable
+      container_name: triliumnext
+      networks:
+        default:
+      ports:
+         - 8282:8080
+      restart: unless-stopped
+      volumes:
+         - CHANGE_TO_COMPOSE_DATA_PATH/triliumnext/trilium-data:/home/node/trilium-data
+networks:
+   default:
+      name: trilium-network
+      driver: bridge
