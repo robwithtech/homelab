@@ -1,0 +1,37 @@
+services:
+  nginx-proxy-manager:
+    container_name: nginx-proxy-manager
+    image: 'jc21/nginx-proxy-manager:latest'
+    networks:
+      nginx-proxy-manager:
+         ipv4_address: 10.0.0.90 #Change this to a static on your network
+      proxy-network:
+    restart: unless-stopped
+#    ports:  # Ports not used when using docker macvlan network
+      # These ports are in format <host-port>:<container-port>
+#      - '80:80' # Public HTTP Port
+#      - '443:443' # Public HTTPS Port
+#      - '81:81' # Admin Web Port
+      # Add any other Stream port you want to expose
+      # - '21:21' # FTP
+
+    # Uncomment the next line if you uncomment anything in the section
+    environment:
+      # Uncomment this if you want to change the location of
+      # the SQLite DB file within the container
+      # DB_SQLITE_FILE: "/data/database.sqlite"
+
+      # Uncomment this if IPv6 is not enabled on your host
+      DISABLE_IPV6: 'true'
+
+    volumes:
+      - CHANGE_TO_COMPOSE_DATA_PATH/nginx-proxy-manager/data:/data
+#      - CHANGE_TO_COMPOSE_DATA_PATH/nginx-proxy-manager/etc/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - CHANGE_TO_COMPOSE_DATA_PATH/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+networks:
+  nginx-proxy-manager:
+    name: local-network
+    external: true
+  proxy-network:
+    name: proxy-network
+    external: true
