@@ -1,0 +1,18 @@
+---
+services:
+   vaultwarden:
+      container_name: vaultwarden
+      image: vaultwarden/server:latest
+      volumes:
+         - CHANGE_TO_COMPOSE_DATA_PATH/vaultwarden/vw-data/:/data/
+      networks:
+         vaultwardennet:
+      ports:
+         - 8081:80
+      restart: unless-stopped
+      environment:
+         - ADMIN_TOKEN=$$argon2id$$v=19$$m=65540,t=3,p=4$$CGK3HkkHa/ACu1V1XFMiew2LLzotSHcGwpLEmTHPW8c$$O8MteIiiAUP6narlbgONsFevDwtzFQTGrvfvoPXeHIY # Change this Token
+networks:
+  vaultwardennet:
+    name: proxy-network
+    external: true
