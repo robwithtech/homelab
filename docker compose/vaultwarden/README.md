@@ -1,3 +1,7 @@
+To generate ADMIN TOKEN for Vaultwarden run command below in ssh session in OMV. 
+
+docker run --rm -it vaultwarden/server /vaultwarden hash
+
 YouTube link: https://youtu.be/cT4Aeu1w5CQ showing vaultwarden.yml file being used with openmediavault
 
 Docker Hub link: https://hub.docker.com/r/vaultwarden/server
