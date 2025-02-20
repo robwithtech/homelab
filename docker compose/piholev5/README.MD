@@ -1,3 +1,5 @@
+This is for Pi-hole version 5.
+
 Link to Pi-hole official site https://pi-hole.net/
 
 Link to my youtube video showing this pihole.yml file being used with openmediavault https://youtu.be/6zdF9OEYfbM

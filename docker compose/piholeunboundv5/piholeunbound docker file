@@ -1,9 +1,11 @@
-FROM pihole/pihole:latest
+FROM pihole/pihole:2024.07.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
   apt-get install unbound -y
+
+RUN apt-get clean
 
 RUN tee /etc/unbound/unbound.conf.d/pi-hole.conf <<EOF
 server:
