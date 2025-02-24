@@ -1,0 +1,43 @@
+services:
+  pihole:
+    container_name: piholev6
+    image: pihole/pihole:latest
+    hostname: piholev6
+    networks:
+      piholev6-net:
+        ipv4_address: 10.0.0.51    #Change to your IP address in your network, make sure macvlan network is created.
+      piholeunbound-net:
+    environment:
+      # Set the appropriate timezone for your location (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), e.g:
+      TZ: 'America/Chicago'
+      # Set a password to access the web interface. Not setting one will result in a random password being assigned
+      FTLCONF_webserver_api_password: 'VerySecurePassword'  #Change this to your secure password
+      FTLCONF_dns_upstreams: 'unbound#5335'    #Make sure this matches your container name. In my case unbound as it is below.
+    # Volumes store your data between container upgrades
+    volumes:
+      # For persisting Pi-hole's databases and common configuration file
+      - 'CHANGE_TO_COMPOSE_DATA_PATH/piholev6/etc/pihole:/etc/pihole'
+      #- 'CHANGE_TO_COMPOSE_DATA_PATH/piholev6/etc/dnsmasq.d:/etc/dnsmasq.d'  #Uncomment if you use that directory. 
+    cap_add:
+      # See https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+      # Required if you are using Pi-hole as your DHCP server, else not needed
+      - NET_ADMIN
+    restart: unless-stopped
+    depends_on:
+      - unbound
+
+  unbound:
+    image: alpinelinux/unbound:latest
+    container_name: unbound
+    networks:
+      piholeunbound-net:
+    volumes:
+      - 'CHANGE_TO_COMPOSE_DATA_PATH/piholev6/etc/unbound:/etc/unbound'
+    restart: unless-stopped
+    
+networks:
+  piholev6-net:
+    name: local-network
+    external: true
+  piholeunbound-net:
+    name: piholeunbound-net
