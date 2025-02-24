@@ -1,0 +1,13 @@
+For root.hints
+
+curl -o root.hints https://www.internic.net/domain/named.root
+
+By default, OMV doesn't have curl installed so you may need to run apt install curl
+
+Links for adlists
+
+https://github.com/hagezi/dns-blocklists
+
+Link to dockerdocs for macvlan explanation
+
+https://docs.docker.com/engine/network/tutorials/macvlan/
